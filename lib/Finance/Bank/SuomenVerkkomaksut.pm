@@ -3,7 +3,7 @@ BEGIN {
   $Finance::Bank::SuomenVerkkomaksut::AUTHORITY = 'cpan:OKKO';
 }
 BEGIN {
-  $Finance::Bank::SuomenVerkkomaksut::VERSION = '0.002';
+  $Finance::Bank::SuomenVerkkomaksut::VERSION = '0.003';
 }
 use Moose;
 use utf8;
@@ -58,6 +58,86 @@ has 'error_message' => ( is => 'rw' );
 
 # ABSTRACT: Process payments through JSON API of Suomen Verkkomaksut in Finland. Enables payments from all Finnish Banks online: Nordea, Osuuspankki, Sampo, Tapiola, Aktia, Nooa, Paikallisosuuspankit, Säästöpankit, Handelsbanken, S-Pankki, Ålandsbanken, also from Visa, Visa Electron, MasterCard credit cards through Luottokunta, and PayPal, billing through Collector and Klarna.
 
+=head1 NAME
+
+Finance::Bank::SuomenVerkkomaksut - Process payments through JSON API of Suomen Verkkomaksut in Finland. Enables payments from all Finnish Banks online: Nordea, Osuuspankki, Sampo, Tapiola, Aktia, Nooa, Paikallisosuuspankit, Säästöpankit, Handelsbanken, S-Pankki, Ålandsbanken, also from Visa, Visa Electron, MasterCard credit cards through Luottokunta, and PayPal, billing through Collector and Klarna.
+
+=head1 SYNOPSIS
+
+    use Finance::Bank::SuomenVerkkomaksut;
+
+    # Creating a new payment
+    my $tx = Finance::Bank::SuomenVerkkomaksut->new({merchant_id => 'XXX', merchant_secret => 'YYY'});
+    # All content in accordance to http://docs.verkkomaksut.fi/ field specs
+    $tx->content({
+            orderNumber => 1,
+            referenceNumber => 13,
+            description => 'Order 1',
+            currency => 'EUR',
+            locale => 'fi_FI',
+            urlSet => {success => $c->uri_for('/payment/success').'/',
+                       failure => $c->uri_for('/payment/failure').'/',
+                       pending => $c->uri_for('/payment/pending').'/',
+                       notification => $c->uri_for('/payment/notification').'/',
+            },
+            orderDetails => {
+                includeVat => 1,
+                contact => {
+                    firstName => 'First',
+                    lastName => 'Last',
+                    email => 'first@example.com',
+                    telephone => '555123',
+                    address => {
+                        street => 'Street 123',
+                        postalCode => '00100',
+                        postalOffice => 'Helsinki',
+                        country => 'FI',
+                    }
+                },
+                products => [
+                    {
+                        "title" => 'Product title',
+                        "amount" => "1.00",
+                        "price" => 123,
+                        "vat" => "0.00",
+                        "discount" => "0.00",
+                        "type" => "1", # 1=normal product row
+                    },
+                    ],
+            },
+
+    });
+
+    # set to 1 when you are developing, 0 in production
+    $tx->test_transaction(1);
+
+    my $submit_result = $tx->submit();
+    if ($submit_result) {
+        print "Please go to ". $tx->url() ." $url to pay your order number ". $tx->order_number().', see you soon.';
+    } else {
+        die 'Failed to generate payment';
+    }
+
+    # Verifying the payment when the user returns or when the notify address receives a request
+    my $tx = Finance::Bank::SuomenVerkkomaksut->new({merchant_id => 'XXX', merchant_secret => 'YYY'});
+    my $checksum_matches = $tx->verify_return({
+            ORDER_NUMBER => $c->req->params->{ORDER_NUMBER},
+            TIMESTAMP => $c->req->params->{TIMESTAMP},
+            PAID => $c->req->params->{PAID},
+            METHOD => $c->req->params->{METHOD},
+            RETURN_AUTHCODE => $c->req->params->{RETURN_AUTHCODE}
+    });
+    if ($checksum_matches) {
+        # depending on the return address, mark payment as paid (if returned to RETURN_ADDRESS),
+        # as pending (if returned to PENDING_ADDRESS) or as canceled (if returned to CANCEL_ADDRESS).
+        if ($url eq $return_url) {
+            # &ship_products();
+        }
+    } else {
+        print "Checksum mismatch, returning not processed. Please contact our customer service if you believe this to be an error.";
+    }
+
+=cut
 
 sub submit {
     my $self = shift;
@@ -137,6 +217,21 @@ sub submit {
     return 1;
 }
 
+=head2 verify_return
+
+    When the end-user has completed the payment he will return to your specified RETURN_ADDRESS,
+    CANCEL_ADDRESS or PENDING_ADDRESS. Before you process the returning any further you must
+    check that the parameters given to this address have the correct checksum.
+
+    This sub verifies the checksum and returns true or false stating if the checksum matched or did not.
+
+    After you know that the checksum matched you can mark the payment as paid (if returned to RETURN_ADDRESS),
+    as pending (if returned to PENDING_ADDRESS) or canceled (if returned to CANCEL_ADDRESS).
+
+    Also the NOTIFY_ADDRESS should call verify_return first to verify the checksum and only then proceed with
+    the information received in the NOTIFY_ADDRESS.
+
+=cut
 
 sub verify_return {
     my $self                  = shift;
@@ -172,115 +267,6 @@ sub verify_return {
     return $result;
 }
 
-
-__PACKAGE__->meta->make_immutable;
-
-1;
-
-__END__
-=pod
-
-=head1 NAME
-
-Finance::Bank::SuomenVerkkomaksut - Process payments through JSON API of Suomen Verkkomaksut in Finland. Enables payments from all Finnish Banks online: Nordea, Osuuspankki, Sampo, Tapiola, Aktia, Nooa, Paikallisosuuspankit, Säästöpankit, Handelsbanken, S-Pankki, Ålandsbanken, also from Visa, Visa Electron, MasterCard credit cards through Luottokunta, and PayPal, billing through Collector and Klarna.
-
-=head1 VERSION
-
-version 0.002
-
-=head1 SYNOPSIS
-
-    use Finance::Bank::SuomenVerkkomaksut;
-
-    # Creating a new payment
-    my $tx = Finance::Bank::SuomenVerkkomaksut->new({merchant_id => 'XXX', merchant_secret => 'YYY'});
-    # All content in accordance to http://docs.verkkomaksut.fi/ field specs
-    $tx->content({
-            orderNumber => 1,
-            referenceNumber => 13,
-            description => 'Order 1',
-            currency => 'EUR',
-            locale => 'fi_FI',
-            urlSet => {success => $c->uri_for('/payment/success').'/',
-                       failure => $c->uri_for('/payment/failure').'/',
-                       pending => $c->uri_for('/payment/pending').'/',
-                       notification => $c->uri_for('/payment/notification').'/',
-            },
-            orderDetails => {
-                includeVat => 1,
-                contact => {
-                    firstName => 'First',
-                    lastName => 'Last',
-                    email => 'first@example.com',
-                    telephone => '555123',
-                    address => {
-                        street => 'Street 123',
-                        postalCode => '00100',
-                        postalOffice => 'Helsinki',
-                        country => 'FI',
-                    }
-                },
-                products => [
-                    {
-                        "title" => 'Product title',
-                        "amount" => "1.00",
-                        "price" => 123,
-                        "vat" => "0.00",
-                        "discount" => "0.00",
-                        "type" => "1", # 1=normal product row
-                    },
-                    ],
-            },
-
-    });
-
-    # set to 1 when you are developing, 0 in production
-    $tx->test_transaction(1);
-
-    my $submit_result = $tx->submit();
-    if ($submit_result) {
-        print "Please go to ". $tx->url() ." $url to pay your order number ". $tx->order_number().', see you soon.';
-    } else {
-        die 'Failed to generate payment';
-    }
-
-    # Verifying the payment when the user returns or when the notify address receives a request
-    my $tx = Finance::Bank::SuomenVerkkomaksut->new({merchant_id => 'XXX', merchant_secret => 'YYY'});
-    my $checksum_matches = $tx->verify_return({
-            ORDER_NUMBER => $c->req->params->{ORDER_NUMBER},
-            TIMESTAMP => $c->req->params->{TIMESTAMP},
-            PAID => $c->req->params->{PAID},
-            METHOD => $c->req->params->{METHOD},
-            RETURN_AUTHCODE => $c->req->params->{RETURN_AUTHCODE}
-    });
-    if ($checksum_matches) {
-        # depending on the return address, mark payment as paid (if returned to RETURN_ADDRESS),
-        # as pending (if returned to PENDING_ADDRESS) or as canceled (if returned to CANCEL_ADDRESS).
-        if ($url eq $return_url) {
-            # &ship_products();
-        }
-    } else {
-        print "Checksum mismatch, returning not processed. Please contact our customer service if you believe this to be an error.";
-    }
-
-=head2 verify_return
-
-    When the end-user has completed the payment he will return to your specified RETURN_ADDRESS,
-    CANCEL_ADDRESS or PENDING_ADDRESS. Before you process the returning any further you must
-    check that the parameters given to this address have the correct checksum.
-
-    This sub verifies the checksum and returns true or false stating if the checksum matched or did not.
-
-    After you know that the checksum matched you can mark the payment as paid (if returned to RETURN_ADDRESS),
-    as pending (if returned to PENDING_ADDRESS) or canceled (if returned to CANCEL_ADDRESS).
-
-    Also the NOTIFY_ADDRESS should call verify_return first to verify the checksum and only then proceed with
-    the information received in the NOTIFY_ADDRESS.
-
-=head1 NAME
-
-Finance::Bank::SuomenVerkkomaksut - Process payments through JSON API of Suomen Verkkomaksut in Finland. Enables payments from all Finnish Banks online: Nordea, Osuuspankki, Sampo, Tapiola, Aktia, Nooa, Paikallisosuuspankit, Säästöpankit, Handelsbanken, S-Pankki, Ålandsbanken, also from Visa, Visa Electron, MasterCard credit cards through Luottokunta, and PayPal, billing through Collector and Klarna.
-
 =head1 SECURITY
 
     Don't allow user to set the test_transaction to true! If the user can set it to true when returning he
@@ -306,16 +292,8 @@ This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.8.8 or,
 at your option, any later version of Perl you may have available.
 
-=head1 AUTHOR
-
-Oskari Okko Ojala <okko@cpan.org>, Frantic Oy http://www.frantic.com/
-
-=head1 COPYRIGHT AND LICENSE
-
-This software is copyright (c) 2011 by Oskari Ojala.
-
-This is free software; you can redistribute it and/or modify it under
-the same terms as the Perl 5 programming language system itself.
-
 =cut
 
+__PACKAGE__->meta->make_immutable;
+
+1;
