@@ -1,14 +1,14 @@
 ---
 abstract: 'Process payments through JSON API of Suomen Verkkomaksut in Finland. Enables payments from all Finnish Banks online: Nordea, Osuuspankki, Sampo, Tapiola, Aktia, Nooa, Paikallisosuuspankit, Säästöpankit, Handelsbanken, S-Pankki, Ålandsbanken, also from Visa, Visa Electron, MasterCard credit cards through Luottokunta, and PayPal, billing through Collector and Klarna.'
 author:
-  - 'Oskari Ojala <okko@cpan.org>'
+  - 'Oskari Okko Ojala <okko@cpan.org>, Frantic Oy http://www.frantic.com/'
 build_requires:
   English: 0
   Test::More: 0
 configure_requires:
-  ExtUtils::MakeMaker: 6.31
+  ExtUtils::MakeMaker: 6.30
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 4.200004, CPAN::Meta::Converter version 2.110580'
+generated_by: 'Dist::Zilla version 4.200006, CPAN::Meta::Converter version 2.110580'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -23,5 +23,5 @@ requires:
   utf8: 0
 resources:
   repository: git://github.com/okko/Finance-Bank-SuomenVerkkomaksut.git
-version: 0.001
+version: 0.002
 x_authority: cpan:OKKO

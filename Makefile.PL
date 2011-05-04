@@ -4,19 +4,19 @@ use warnings;
 
 
 
-use ExtUtils::MakeMaker 6.31;
+use ExtUtils::MakeMaker 6.30;
 
 
 
 my %WriteMakefileArgs = (
   'ABSTRACT' => 'Process payments through JSON API of Suomen Verkkomaksut in Finland. Enables payments from all Finnish Banks online: Nordea, Osuuspankki, Sampo, Tapiola, Aktia, Nooa, Paikallisosuuspankit, Säästöpankit, Handelsbanken, S-Pankki, Ålandsbanken, also from Visa, Visa Electron, MasterCard credit cards through Luottokunta, and PayPal, billing through Collector and Klarna.',
-  'AUTHOR' => 'Oskari Ojala <okko@cpan.org>',
+  'AUTHOR' => 'Oskari Okko Ojala <okko@cpan.org>, Frantic Oy http://www.frantic.com/',
   'BUILD_REQUIRES' => {
     'English' => '0',
     'Test::More' => '0'
   },
   'CONFIGURE_REQUIRES' => {
-    'ExtUtils::MakeMaker' => '6.31'
+    'ExtUtils::MakeMaker' => '6.30'
   },
   'DISTNAME' => 'Finance-Bank-SuomenVerkkomaksut',
   'EXE_FILES' => [],
@@ -30,7 +30,7 @@ my %WriteMakefileArgs = (
     'Net::SSLeay' => '0',
     'utf8' => '0'
   },
-  'VERSION' => '0.001',
+  'VERSION' => '0.002',
   'test' => {
     'TESTS' => 't/*.t'
   }
