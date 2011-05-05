@@ -1,5 +1,5 @@
 {
-   "abstract" : "Process payments through JSON API of Suomen Verkkomaksut in Finland. Enables payments from all Finnish Banks online: Nordea, Osuuspankki, Sampo, Tapiola, Aktia, Nooa, Paikallisosuuspankit, S\u00c3\u00a4\u00c3\u00a4st\u00c3\u00b6pankit, Handelsbanken, S-Pankki, \u00c3\u0085landsbanken, also from Visa, Visa Electron, MasterCard credit cards through Luottokunta, and PayPal, billing through Collector and Klarna.",
+   "abstract" : "Process payments through JSON API of Suomen Verkkomaksut in Finland. Payments from all Finnish Banks online: Nordea, Osuuspankki, Sampo, Tapiola, Aktia, Nooa, Paikallisosuuspankit, S\u00c3\u00a4\u00c3\u00a4st\u00c3\u00b6pankit, Handelsbanken, S-Pankki, \u00c3\u0085landsbanken, also from Visa, Visa Electron, MasterCard credit cards through Luottokunta, and PayPal, billing through Collector and Klarna.",
    "author" : [
       "Oskari Okko Ojala <okko@cpan.org>, Frantic Oy http://www.frantic.com/"
    ],
@@ -44,7 +44,7 @@
          "web" : "http://github.com/okko/Finance-Bank-SuomenVerkkomaksut"
       }
    },
-   "version" : "0.003",
+   "version" : "0.004",
    "x_authority" : "cpan:OKKO"
 }
 
