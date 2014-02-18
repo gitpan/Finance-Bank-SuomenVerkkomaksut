@@ -9,7 +9,7 @@ use ExtUtils::MakeMaker 6.30;
 
 
 my %WriteMakefileArgs = (
-  "ABSTRACT" => "Process payments through JSON API of Suomen Verkkomaksut in Finland. Payments from all Finnish Banks online: Nordea, Osuuspankki, Sampo, Tapiola, Aktia, Nooa, Paikallisosuuspankit, S\303\244\303\244st\303\266pankit, Handelsbanken, S-Pankki, \303\205landsbanken, also from Visa, Visa Electron, MasterCard credit cards through Luottokunta, and PayPal, billing through Collector and Klarna.",
+  "ABSTRACT" => "Process payments through JSON API of Paytrail (Suomen Verkkomaksut) in Finland. Payments from all Finnish Banks online: Nordea, Osuuspankki, Sampo, Tapiola, Aktia, Nooa, Paikallisosuuspankit, S\303\244\303\244st\303\266pankit, Handelsbanken, S-Pankki, \303\205landsbanken, also from Visa, Visa Electron, MasterCard credit cards through Luottokunta, and PayPal, billing through Collector and Klarna.",
   "AUTHOR" => "Oskari Okko Ojala <okko\@cpan.org>, Frantic Oy http://www.frantic.com/",
   "BUILD_REQUIRES" => {},
   "CONFIGURE_REQUIRES" => {
@@ -29,7 +29,7 @@ my %WriteMakefileArgs = (
     "utf8" => 0
   },
   "TEST_REQUIRES" => {},
-  "VERSION" => "0.005",
+  "VERSION" => "0.006",
   "test" => {
     "TESTS" => "t/*.t"
   }
