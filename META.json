@@ -4,7 +4,7 @@
       "Oskari Okko Ojala <okko@cpan.org>, Frantic Oy http://www.frantic.com/"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 4.200006, CPAN::Meta::Converter version 2.110580",
+   "generated_by" : "Dist::Zilla version 4.300037, CPAN::Meta::Converter version 2.132140",
    "license" : [
       "perl_5"
    ],
@@ -19,20 +19,22 @@
             "ExtUtils::MakeMaker" : "6.30"
          }
       },
-      "runtime" : {
+      "develop" : {
          "requires" : {
-            "Data::Dumper" : 0,
-            "Digest::MD5" : 0,
-            "JSON::XS" : 0,
-            "Moose" : 0,
-            "Net::SSLeay" : 0,
-            "utf8" : 0
+            "Pod::Coverage::TrustPod" : "0",
+            "Test::Pod" : "1.41",
+            "Test::Pod::Coverage" : "1.08"
          }
       },
-      "test" : {
+      "runtime" : {
          "requires" : {
-            "English" : 0,
-            "Test::More" : 0
+            "Data::Dumper" : "0",
+            "Digest::MD5" : "0",
+            "JSON::XS" : "0",
+            "MIME::Base64" : "0",
+            "Moose" : "0",
+            "Net::SSLeay" : "0",
+            "utf8" : "0"
          }
       }
    },
@@ -44,7 +46,7 @@
          "web" : "http://github.com/okko/Finance-Bank-SuomenVerkkomaksut"
       }
    },
-   "version" : "0.004",
+   "version" : "0.005",
    "x_authority" : "cpan:OKKO"
 }
 
