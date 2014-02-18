@@ -22,5 +22,5 @@ requires:
   utf8: 0
 resources:
   repository: git://github.com/okko/Finance-Bank-SuomenVerkkomaksut.git
-version: 0.006
+version: 0.007
 x_authority: cpan:OKKO
