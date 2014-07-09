@@ -17,7 +17,6 @@ use Test::NoTabs;
 my @files = (
     'lib/Finance/Bank/Paytrail.pm',
     'lib/Finance/Bank/SuomenVerkkomaksut.pm',
-    't/author-critic.t',
     't/release-check-changes.t',
     't/release-kwalitee.t',
     't/release-no-tabs.t',

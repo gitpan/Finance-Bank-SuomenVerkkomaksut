@@ -2,7 +2,7 @@ package Finance::Bank::SuomenVerkkomaksut;
 BEGIN {
   $Finance::Bank::SuomenVerkkomaksut::AUTHORITY = 'cpan:OKKO';
 }
-$Finance::Bank::SuomenVerkkomaksut::VERSION = '0.008';
+$Finance::Bank::SuomenVerkkomaksut::VERSION = '0.009';
 use utf8;
 use strict;
 
