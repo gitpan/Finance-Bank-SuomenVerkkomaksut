@@ -4,9 +4,9 @@ author:
   - 'Oskari Okko Ojala <okko@cpan.org>, Frantic Oy http://www.frantic.com/'
 build_requires: {}
 configure_requires:
-  ExtUtils::MakeMaker: '6.30'
+  ExtUtils::MakeMaker: '0'
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 5.015, CPAN::Meta::Converter version 2.140640'
+generated_by: 'Dist::Zilla version 5.020, CPAN::Meta::Converter version 2.140640'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -23,5 +23,5 @@ requires:
   utf8: '0'
 resources:
   repository: git://github.com/okko/Finance-Bank-SuomenVerkkomaksut.git
-version: '0.009'
+version: '0.010'
 x_authority: cpan:OKKO
